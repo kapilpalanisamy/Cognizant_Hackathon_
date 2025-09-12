@@ -3,19 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Upload, FileImage, AlertTriangle, CheckCircle, Download, BarChart3, Brain, Clock, Shield, TrendingUp, PieChart, Activity } from "lucide-react";
+import { Upload, FileImage, AlertTriangle, CheckCircle, Download, BarChart3, Brain, Clock, Shield } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { generateFraudReport } from "@/utils/pdfGenerator";
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  Cell
-} from 'recharts';
 
 const RiskAssessment = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -23,30 +13,6 @@ const RiskAssessment = () => {
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [modelSource, setModelSource] = useState(null);
-
-  // Generate dynamic metrics based on image analysis
-  const getDynamicMetrics = (prediction) => {
-    if (!prediction || typeof prediction.fraud_probability !== 'number') {
-      return [
-        { name: 'Accuracy', value: 91.4, fill: '#8B5CF6' },
-        { name: 'Precision', value: 89.2, fill: '#06B6D4' },
-        { name: 'Recall', value: 93.7, fill: '#10B981' },
-        { name: 'F1-Score', value: 91.4, fill: '#F59E0B' }
-      ];
-    }
-    
-    // Ensure fraud_probability is a valid number between 0 and 1
-    const fraudProb = Math.max(0, Math.min(1, prediction.fraud_probability || 0.5));
-    const baseAccuracy = 91.4;
-    const variation = (fraudProb - 0.5) * 10; // Creates variation based on fraud probability
-    
-    return [
-      { name: 'Accuracy', value: Number(baseAccuracy.toFixed(1)), fill: '#8B5CF6' },
-      { name: 'Precision', value: Number(Math.max(85, Math.min(95, 89.2 + variation)).toFixed(1)), fill: '#06B6D4' },
-      { name: 'Recall', value: Number(Math.max(88, Math.min(97, 93.7 + (Math.random() * 4 - 2))).toFixed(1)), fill: '#10B981' },
-      { name: 'F1-Score', value: Number(Math.max(87, Math.min(94, 91.4 + variation * 0.5)).toFixed(1)), fill: '#F59E0B' }
-    ];
-  };
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -562,82 +528,6 @@ const RiskAssessment = () => {
             )}
           </CardContent>
         </Card>
-        </div>
-
-        {/* Analytics Dashboard - Simplified */}
-        <div className="space-y-6 mt-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2">
-              Analytics Dashboard
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400">
-              Analysis insights and model performance
-            </p>
-          </div>
-
-          {/* Only show charts when prediction exists */}
-          {prediction && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Fraud vs Non-Fraud Confidence Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    Fraud vs Non-Fraud Confidence
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={[
-                      { 
-                        metric: 'Fraud Confidence', 
-                        value: Number(((prediction.fraud_probability || 0) * 100).toFixed(1))
-                      },
-                      { 
-                        metric: 'Non-Fraud Confidence', 
-                        value: Number(((1 - (prediction.fraud_probability || 0)) * 100).toFixed(1))
-                      }
-                    ]}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="metric" />
-                      <YAxis domain={[0, 100]} />
-                      <Tooltip formatter={(value) => [`${value}%`, 'Confidence']} />
-                      <Bar dataKey="value">
-                        <Cell fill="#EF4444" />
-                        <Cell fill="#10B981" />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-
-              {/* Model Performance Metrics Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Brain className="h-5 w-5" />
-                    Model Performance Metrics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={getDynamicMetrics(prediction)}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis domain={[0, 100]} />
-                      <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
-                      <Bar dataKey="value">
-                        <Cell fill="#8B5CF6" />
-                        <Cell fill="#06B6D4" />
-                        <Cell fill="#10B981" />
-                        <Cell fill="#F59E0B" />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-            </div>
-          )}
         </div>
       </div>
     </div>
