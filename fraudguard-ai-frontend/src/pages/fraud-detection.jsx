@@ -12,6 +12,7 @@ const FraudDetection = () => {
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [modelSource, setModelSource] = useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -85,10 +86,12 @@ const FraudDetection = () => {
         if (result.success) {
           console.log('Setting prediction from result.prediction:', result.prediction);
           setPrediction(result.prediction);
+          setModelSource(result.source || 'unknown');
         } else if (result.prediction) {
           // Handle direct ML API response format
           console.log('Setting prediction from direct result.prediction:', result.prediction);
           setPrediction(result.prediction);
+          setModelSource(result.source || 'direct_api');
         } else {
           console.error('Invalid response format:', result);
           throw new Error('Invalid response format');
@@ -275,6 +278,30 @@ const FraudDetection = () => {
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                   <h3 className="font-semibold mb-2">Recommended Action:</h3>
                   <p>{prediction.recommendedAction}</p>
+                </div>
+
+                {/* Model Source Indicator */}
+                <div className={`p-3 rounded-lg border-2 ${
+                  modelSource === 'real_model' 
+                    ? 'bg-green-50 border-green-200 text-green-800' 
+                    : 'bg-orange-50 border-orange-200 text-orange-800'
+                }`}>
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    {modelSource === 'real_model' ? (
+                      <>
+                        <CheckCircle className="h-4 w-4" />
+                        ✅ Real AI Model - PyTorch EfficientNet-B1 (91.4% accuracy)
+                      </>
+                    ) : (
+                      <>
+                        <AlertTriangle className="h-4 w-4" />
+                        ⚠️ Fallback Mode - Mock prediction (ML API unavailable)
+                      </>
+                    )}
+                  </div>
+                  <p className="text-xs mt-1 opacity-75">
+                    Source: {modelSource || 'unknown'}
+                  </p>
                 </div>
 
                 {/* Generate Report Button */}
