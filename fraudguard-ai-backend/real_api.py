@@ -108,14 +108,14 @@ def predict_fraud(image: Image.Image):
             predicted_class = torch.argmax(probabilities, dim=1).item()
             confidence = probabilities[0][predicted_class].item() * 100
             
-            # Fixed class mapping: 0=NON-FRAUD, 1=FRAUD (corrected)
-            fraud_prob = probabilities[0][1].item() * 100
-            non_fraud_prob = probabilities[0][0].item() * 100
+            # Fixed class mapping: 0=FRAUD, 1=NON-FRAUD (corrected based on training)
+            fraud_prob = probabilities[0][0].item() * 100
+            non_fraud_prob = probabilities[0][1].item() * 100
         
         processing_time = time.time() - start_time
         
-        # Corrected class mapping
-        prediction = "NON-FRAUD" if predicted_class == 0 else "FRAUD"
+        # Corrected class mapping: 0=FRAUD, 1=NON-FRAUD
+        prediction = "FRAUD" if predicted_class == 0 else "NON-FRAUD"
         
         # Risk level logic
         if prediction == "FRAUD":
