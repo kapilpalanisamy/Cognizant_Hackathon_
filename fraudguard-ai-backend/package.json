@@ -1,0 +1,20 @@
+{
+  "name": "fraudguard-ai-backend",
+  "version": "1.0.0",
+  "description": "FraudGuard AI - ML API Backend for Fraud Detection",
+  "main": "real_api.py",
+  "scripts": {
+    "start": "uvicorn real_api:app --host 0.0.0.0 --port $PORT",
+    "dev": "uvicorn real_api:app --reload",
+    "test": "python test_server.py"
+  },
+  "keywords": [
+    "fraud-detection",
+    "machine-learning",
+    "pytorch",
+    "fastapi",
+    "ai"
+  ],
+  "author": "FraudGuard AI Team",
+  "license": "MIT"
+}

@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+fraudguard-ai-frontend/node_modules/
+job-portal/node_modules/
+
+# Build outputs
+fraudguard-ai-frontend/dist/
+job-portal/dist/
+
+# Environment files
+.env
+.env.local
+.env.production
+fraudguard-ai-frontend/.env
+fraudguard-ai-frontend/.env.local
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+fraudguard-ai-backend/__pycache__/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Training data and large files
+Insurance-Fraud-Detection/
+*.pth
+!fraudguard-ai-backend/fast_precision_fraud_model_statedict.pth
+
+# Jupyter notebooks
+*.ipynb
+
+# Other model files
+balanced_fraud_model.pth
+emergency_fraud_model.pth
+fast_precision_fraud_model.pth
+precision_fraud_model.pth
+*.zip

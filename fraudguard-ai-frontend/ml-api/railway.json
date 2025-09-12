@@ -1,0 +1,10 @@
+{
+  "build": {
+    "builder": "dockerfile"
+  },
+  "deploy": {
+    "startCommand": "python real_api.py",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 300
+  }
+}
