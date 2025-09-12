@@ -86,7 +86,12 @@ const RiskAssessment = () => {
 
         console.log('API Response status:', response.status, response.ok);
         if (!response.ok) {
-          throw new Error(`API request failed: ${response.status}`);
+          const errorResult = await response.json().catch(() => null);
+          if (response.status === 503 && errorResult) {
+            throw new Error(`ML API Unavailable: ${errorResult.message || 'Service temporarily unavailable'}`);
+          } else {
+            throw new Error(`API request failed: ${response.status}`);
+          }
         }
 
         const result = await response.json();
@@ -119,6 +124,10 @@ const RiskAssessment = () => {
         errorMessage = 'Network error: Unable to connect to the fraud detection service.';
       } else if (error.message.includes('504')) {
         errorMessage = 'Service timeout: The analysis is taking longer than expected. Please try again.';
+      } else if (error.message.includes('ML API Unavailable')) {
+        errorMessage = 'ML Service Unavailable: The AI fraud detection model is currently offline. Please ensure your ML API is running and try again.';
+      } else if (error.message.includes('API request failed: 503')) {
+        errorMessage = 'ML Service Unavailable: The AI fraud detection model is currently offline. Please try again later.';
       } else if (error.message.includes('API request failed')) {
         errorMessage = 'The fraud detection service is temporarily unavailable. Please try again in a few moments.';
       } else {
@@ -469,31 +478,17 @@ const RiskAssessment = () => {
                 </div>
 
                 {/* Model Source Indicator */}
-                <div className={`p-4 rounded-xl border-2 shadow-sm ${
-                  modelSource === 'real_model' 
-                    ? 'bg-green-50 border-green-200 text-green-800' 
-                    : 'bg-orange-50 border-orange-200 text-orange-800'
-                }`}>
-                  <div className="flex items-center gap-3 text-sm font-medium">
-                    {modelSource === 'real_model' ? (
-                      <>
-                        <CheckCircle className="h-5 w-5" />
-                        <div>
-                          <p className="font-bold">✅ Real AI Model Active</p>
-                          <p className="text-xs opacity-75">PyTorch EfficientNet-B1 (91.4% accuracy) • Source: {modelSource}</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <AlertTriangle className="h-5 w-5" />
-                        <div>
-                          <p className="font-bold">⚠️ Fallback Mode</p>
-                          <p className="text-xs opacity-75">Mock prediction (ML API unavailable) • Source: {modelSource}</p>
-                        </div>
-                      </>
-                    )}
+                {modelSource === 'real_model' && (
+                  <div className="p-4 rounded-xl border-2 shadow-sm bg-green-50 border-green-200 text-green-800">
+                    <div className="flex items-center gap-3 text-sm font-medium">
+                      <CheckCircle className="h-5 w-5" />
+                      <div>
+                        <p className="font-bold">✅ Real AI Model Active</p>
+                        <p className="text-xs opacity-75">PyTorch EfficientNet-B1 (91.4% accuracy) • Authenticated ML API</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Enhanced Generate Report Button */}
                 <div className="mt-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border border-indigo-200 dark:border-indigo-700">
