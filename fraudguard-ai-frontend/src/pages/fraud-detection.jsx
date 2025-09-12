@@ -47,10 +47,10 @@ const FraudDetection = () => {
         console.log('File read successfully, converting to base64...');
         const base64 = reader.result.split(',')[1];
         
-        // Use real ML API through Netlify function in production for CORS handling
+        // Use real ML API in development, Netlify function in production
         const apiUrl = import.meta.env.DEV 
-          ? 'https://fraudguard-ai-backend.onrender.com/predict-base64'  // Direct API in dev
-          : '/.netlify/functions/predict-fraud';  // Netlify function in production
+          ? 'http://localhost:8001/predict-base64'  // Real ML API
+          : '/.netlify/functions/predict-fraud';
         
         console.log('Making API call to:', apiUrl);
         
@@ -86,12 +86,12 @@ const FraudDetection = () => {
         if (result.success) {
           console.log('Setting prediction from result.prediction:', result.prediction);
           setPrediction(result.prediction);
-          setModelSource(result.source || 'real_model');
+          setModelSource(result.source || 'unknown');
         } else if (result.prediction) {
           // Handle direct ML API response format
           console.log('Setting prediction from direct result.prediction:', result.prediction);
           setPrediction(result.prediction);
-          setModelSource('real_model');  // Direct API response is from real model
+          setModelSource(result.source || 'direct_api');
         } else {
           console.error('Invalid response format:', result);
           throw new Error('Invalid response format');
@@ -139,70 +139,72 @@ const FraudDetection = () => {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      {/* More Natural Header */}
-      <div className="text-center mb-10">
-        <div className="flex items-center justify-center gap-4 mb-6">
-          <div className="p-3 bg-blue-600 rounded-lg shadow-md">
+      {/* Enhanced Header */}
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center gap-3 mb-6">
+          <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
             <Brain className="h-8 w-8 text-white" />
           </div>
           <div className="text-left">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-              Insurance Fraud Detection
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              AI Fraud Detection Analysis
             </h1>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">Powered by Machine Learning</p>
+            <p className="text-slate-600 text-lg">Advanced Neural Network • Real-time Analysis</p>
           </div>
         </div>
-        <div className="max-w-xl mx-auto">
-          <p className="text-gray-600 dark:text-gray-300 text-lg mb-6">
-            Upload vehicle damage images to detect potential insurance fraud with our AI system
+        <div className="max-w-2xl mx-auto">
+          <p className="text-gray-600 mb-4">
+            Upload vehicle damage images for instant AI-powered fraud detection analysis
           </p>
-          <div className="flex items-center justify-center gap-8 text-sm text-gray-500">
+          <div className="flex items-center justify-center gap-6 text-sm text-slate-500">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>91% Accuracy</span>
+              <CheckCircle className="h-4 w-4 text-green-500" />
+              <span>91.4% Accuracy</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span>Fast Processing</span>
+              <Clock className="h-4 w-4 text-blue-500" />
+              <span>Real-time Processing</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-              <span>Secure</span>
+              <Shield className="h-4 w-4 text-purple-500" />
+              <span>Secure Analysis</span>
             </div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Upload Section */}
-        <Card className="shadow-md border">
-          <CardHeader className="bg-gray-50 dark:bg-gray-800">
+        {/* Enhanced Upload Section */}
+        <Card className="shadow-lg border-2">
+          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
             <CardTitle className="flex items-center gap-3 text-lg">
-              <Upload className="h-5 w-5 text-blue-600" />
-              Upload Vehicle Image
+              <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                <Upload className="h-5 w-5 text-blue-600" />
+              </div>
+              Image Upload & Analysis
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6">
             <div
               {...getRootProps()}
-              className={`border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 cursor-pointer ${
+              className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 cursor-pointer ${
                 isDragActive || dragActive
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 transform scale-105'
-                  : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 scale-105'
+                  : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50/50'
               }`}
             >
               <input {...getInputProps()} />
               <div className="flex flex-col items-center gap-4">
-                <div className={`p-4 rounded-full transition-colors ${
-                  isDragActive ? 'bg-blue-100 dark:bg-blue-900' : 'bg-gray-100 dark:bg-gray-700'
+                <div className={`p-4 rounded-full ${
+                  isDragActive ? 'bg-blue-100 dark:bg-blue-900' : 'bg-gray-100 dark:bg-gray-800'
                 }`}>
                   <FileImage className={`h-12 w-12 ${
                     isDragActive ? 'text-blue-600' : 'text-gray-400'
                   }`} />
                 </div>
                 <div>
-                  <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                    {isDragActive ? 'Drop the image here' : 'Drag & drop an image here'}
+                  <p className="text-lg font-medium text-slate-700 dark:text-slate-300">
+                    {isDragActive ? '📁 Drop the image here' : '🖼️ Drag & drop an image here'}
                   </p>
                   <p className="text-sm text-gray-500">or click to select a file</p>
                   <p className="text-xs text-gray-400 mt-2">
@@ -213,39 +215,33 @@ const FraudDetection = () => {
             </div>
 
             {selectedFile && (
-              <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+              <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl border border-green-200 dark:border-green-700">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                    </div>
                     <div>
-                      <p className="font-medium text-green-800 dark:text-green-300">{selectedFile.name}</p>
+                      <p className="font-semibold text-green-800 dark:text-green-300">{selectedFile.name}</p>
                       <p className="text-sm text-green-600 dark:text-green-400">
-                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • Ready for analysis
+                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • Ready for Analysis
                       </p>
                     </div>
                   </div>
                   <Button 
                     onClick={analyzeFraud} 
                     disabled={loading}
-                    className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
-                      loading 
-                        ? 'bg-gray-400 cursor-not-allowed' 
-                        : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transform hover:scale-105'
-                    } text-white shadow-md`}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-lg shadow-lg font-semibold"
                   >
                     {loading ? (
                       <div className="flex items-center gap-2">
-                        <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
-                          <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
-                          <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
-                        </div>
-                        <span>Analyzing...</span>
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        Analyzing...
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
                         <Brain className="h-4 w-4" />
-                        <span>Analyze Image</span>
+                        Analyze with AI
                       </div>
                     )}
                   </Button>
@@ -255,13 +251,13 @@ const FraudDetection = () => {
 
             {selectedFile && (
               <div className="mt-4">
-                <div className="relative rounded-lg overflow-hidden shadow-md">
+                <div className="relative rounded-xl overflow-hidden shadow-lg">
                   <img
                     src={URL.createObjectURL(selectedFile)}
-                    alt="Selected vehicle image"
+                    alt="Selected"
                     className="w-full h-64 object-cover"
                   />
-                  <div className="absolute top-3 left-3 bg-black/60 text-white px-3 py-1 rounded text-sm">
+                  <div className="absolute top-3 left-3 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
                     Preview
                   </div>
                 </div>
@@ -309,12 +305,12 @@ const FraudDetection = () => {
             {prediction && !loading && (
               <div className="space-y-6">
                 {/* Main Prediction Result Card */}
-                <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-lg border">
+                <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 p-6 rounded-xl border">
                   <div className="text-center">
-                    <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-lg text-white text-lg font-semibold shadow-md ${
+                    <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-white text-lg font-bold shadow-lg ${
                       prediction.prediction === 'FRAUD' 
-                        ? 'bg-red-600' 
-                        : 'bg-green-600'
+                        ? 'bg-gradient-to-r from-red-500 to-red-600' 
+                        : 'bg-gradient-to-r from-green-500 to-green-600'
                     }`}>
                       {prediction.prediction === 'FRAUD' ? (
                         <AlertTriangle className="h-6 w-6" />
@@ -324,10 +320,10 @@ const FraudDetection = () => {
                       <span>{prediction.prediction}</span>
                     </div>
                     <div className="mt-4">
-                      <p className="text-3xl font-bold text-gray-800 dark:text-white">{prediction.confidence}%</p>
-                      <p className="text-gray-600 dark:text-gray-300">Confidence Score</p>
+                      <p className="text-3xl font-bold text-slate-800 dark:text-white">{prediction.confidence}%</p>
+                      <p className="text-slate-600 dark:text-slate-300">Confidence Score</p>
                     </div>
-                    <div className={`inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-lg text-sm font-medium ${
+                    <div className={`inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-full text-sm font-medium ${
                       prediction.riskLevel === 'VERY LOW' ? 'bg-green-100 text-green-800' :
                       prediction.riskLevel === 'LOW' ? 'bg-blue-100 text-blue-800' :
                       prediction.riskLevel === 'MODERATE' ? 'bg-yellow-100 text-yellow-800' :
@@ -343,7 +339,7 @@ const FraudDetection = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   
                   {/* Probability Breakdown */}
-                  <div className="bg-white dark:bg-slate-800 p-6 rounded-lg border shadow-sm">
+                  <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border shadow-sm">
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                       <BarChart3 className="h-5 w-5 text-blue-600" />
                       Probability Analysis
@@ -354,9 +350,9 @@ const FraudDetection = () => {
                           <span className="text-sm font-medium text-red-600">Fraud Probability</span>
                           <span className="text-lg font-bold text-red-600">{prediction.fraudProbability}%</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded h-3">
+                        <div className="w-full bg-gray-200 rounded-full h-3">
                           <div 
-                            className="bg-red-500 h-3 rounded transition-all duration-1000" 
+                            className="bg-gradient-to-r from-red-400 to-red-600 h-3 rounded-full transition-all duration-1000" 
                             style={{width: `${prediction.fraudProbability}%`}}
                           ></div>
                         </div>
@@ -366,9 +362,9 @@ const FraudDetection = () => {
                           <span className="text-sm font-medium text-green-600">Non-Fraud Probability</span>
                           <span className="text-lg font-bold text-green-600">{prediction.nonFraudProbability}%</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded h-3">
+                        <div className="w-full bg-gray-200 rounded-full h-3">
                           <div 
-                            className="bg-green-500 h-3 rounded transition-all duration-1000" 
+                            className="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-1000" 
                             style={{width: `${prediction.nonFraudProbability}%`}}
                           ></div>
                         </div>
@@ -377,81 +373,59 @@ const FraudDetection = () => {
                   </div>
 
                   {/* AI Model Performance Metrics */}
-                  <div className="bg-white dark:bg-slate-800 p-6 rounded-lg border shadow-sm">
+                  <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border shadow-sm">
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                       <Brain className="h-5 w-5 text-purple-600" />
                       Model Performance
                     </h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                        <p className="text-2xl font-bold text-purple-600">
-                          {prediction.modelMetrics ? (prediction.modelMetrics.accuracy * 100).toFixed(1) : '91.4'}%
-                        </p>
+                        <p className="text-2xl font-bold text-purple-600">91.4%</p>
                         <p className="text-xs text-purple-700 dark:text-purple-300">Accuracy</p>
                       </div>
                       <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                        <p className="text-2xl font-bold text-blue-600">
-                          {prediction.modelMetrics ? (prediction.modelMetrics.precision * 100).toFixed(1) : '87.9'}%
-                        </p>
+                        <p className="text-2xl font-bold text-blue-600">87.9%</p>
                         <p className="text-xs text-blue-700 dark:text-blue-300">Precision</p>
                       </div>
                       <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                        <p className="text-2xl font-bold text-green-600">
-                          {prediction.modelMetrics ? (prediction.modelMetrics.recall * 100).toFixed(1) : '89.2'}%
-                        </p>
+                        <p className="text-2xl font-bold text-green-600">89.2%</p>
                         <p className="text-xs text-green-700 dark:text-green-300">Recall</p>
                       </div>
                       <div className="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                        <p className="text-2xl font-bold text-orange-600">
-                          {prediction.modelMetrics ? (prediction.modelMetrics.f1_score * 100).toFixed(1) : '88.5'}%
-                        </p>
+                        <p className="text-2xl font-bold text-orange-600">88.5%</p>
                         <p className="text-xs text-orange-700 dark:text-orange-300">F1-Score</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Processing Details */}
-                  <div className="bg-white dark:bg-slate-800 p-6 rounded-lg border shadow-sm">
+                  <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border shadow-sm">
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                       <Clock className="h-5 w-5 text-indigo-600" />
                       Processing Details
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600 dark:text-gray-300">Processing Time</span>
+                        <span className="text-sm text-slate-600 dark:text-slate-300">Processing Time</span>
                         <span className="font-semibold">{prediction.processingTime}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600 dark:text-gray-300">Model Architecture</span>
-                        <span className="font-semibold">
-                          {prediction.modelMetrics?.model_architecture || 'EfficientNet-B1'}
-                        </span>
+                        <span className="text-sm text-slate-600 dark:text-slate-300">Model Architecture</span>
+                        <span className="font-semibold">EfficientNet-B1</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600 dark:text-gray-300">Training Dataset</span>
-                        <span className="font-semibold">
-                          {prediction.modelMetrics?.training_dataset_size || '~8000 images'}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600 dark:text-gray-300">Validation Accuracy</span>
-                        <span className="font-semibold">
-                          {prediction.modelMetrics ? (prediction.modelMetrics.validation_accuracy * 100).toFixed(1) + '%' : '91.4%'}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600 dark:text-gray-300">Input Resolution</span>
+                        <span className="text-sm text-slate-600 dark:text-slate-300">Input Resolution</span>
                         <span className="font-semibold">224x224</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm text-gray-600 dark:text-gray-300">Analysis Date</span>
+                        <span className="text-sm text-slate-600 dark:text-slate-300">Analysis Date</span>
                         <span className="font-semibold">{new Date().toLocaleDateString()}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Risk Assessment */}
-                  <div className="bg-white dark:bg-slate-800 p-6 rounded-lg border shadow-sm">
+                  <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border shadow-sm">
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                       <Shield className="h-5 w-5 text-amber-600" />
                       Risk Assessment
@@ -467,152 +441,13 @@ const FraudDetection = () => {
                         <p className="font-semibold text-sm">Risk Category</p>
                         <p className="text-lg font-bold">{prediction.riskLevel}</p>
                       </div>
-                      <div className="p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
+                      <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
                         <p className="font-semibold text-sm mb-1">Recommended Action</p>
                         <p className="text-sm">{prediction.recommendedAction}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                {/* Comprehensive Model Overview */}
-                <div className="bg-white dark:bg-slate-800 p-6 rounded-lg border shadow-sm col-span-1 md:col-span-2">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-indigo-600" />
-                    Complete Model Analysis
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                    <div className="text-center p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
-                      <p className="text-xl font-bold text-indigo-600">
-                        {prediction.modelMetrics ? (prediction.modelMetrics.accuracy * 100).toFixed(1) : '91.4'}%
-                      </p>
-                      <p className="text-xs text-indigo-700 dark:text-indigo-300">Overall Accuracy</p>
-                    </div>
-                    <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                      <p className="text-xl font-bold text-blue-600">
-                        {prediction.modelMetrics ? (prediction.modelMetrics.precision * 100).toFixed(1) : '87.9'}%
-                      </p>
-                      <p className="text-xs text-blue-700 dark:text-blue-300">Fraud Precision</p>
-                    </div>
-                    <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                      <p className="text-xl font-bold text-green-600">
-                        {prediction.modelMetrics ? (prediction.modelMetrics.recall * 100).toFixed(1) : '89.2'}%
-                      </p>
-                      <p className="text-xs text-green-700 dark:text-green-300">Fraud Recall</p>
-                    </div>
-                    <div className="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                      <p className="text-xl font-bold text-orange-600">
-                        {prediction.modelMetrics ? (prediction.modelMetrics.f1_score * 100).toFixed(1) : '88.5'}%
-                      </p>
-                      <p className="text-xs text-orange-700 dark:text-orange-300">F1-Score</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg">
-                      <p className="font-medium text-gray-700 dark:text-gray-300">Architecture</p>
-                      <p className="text-gray-900 dark:text-white font-semibold">
-                        {prediction.modelMetrics?.model_architecture || 'EfficientNet-B1'}
-                      </p>
-                    </div>
-                    <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg">
-                      <p className="font-medium text-gray-700 dark:text-gray-300">Training Data</p>
-                      <p className="text-gray-900 dark:text-white font-semibold">
-                        {prediction.modelMetrics?.training_dataset_size || '~8000 images'}
-                      </p>
-                    </div>
-                    <div className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg">
-                      <p className="font-medium text-gray-700 dark:text-gray-300">Validation Score</p>
-                      <p className="text-gray-900 dark:text-white font-semibold">
-                        {prediction.modelMetrics ? (prediction.modelMetrics.validation_accuracy * 100).toFixed(1) + '%' : '91.4%'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Advanced AI Analysis Metrics */}
-                {prediction.advancedMetrics && (
-                  <div className="bg-white dark:bg-slate-800 p-6 rounded-lg border shadow-sm col-span-1 md:col-span-2">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                      <Brain className="h-5 w-5 text-purple-600" />
-                      Advanced AI Analysis
-                    </h3>
-                    
-                    {/* Prediction Uncertainty */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                      <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
-                        <h4 className="font-semibold text-purple-700 dark:text-purple-300 mb-2">Prediction Uncertainty</h4>
-                        <div className="text-2xl font-bold text-purple-600 mb-1">
-                          {prediction.advancedMetrics.uncertaintyLevel}
-                        </div>
-                        <div className="text-sm text-purple-600">
-                          Entropy: {prediction.advancedMetrics.predictionEntropy}
-                        </div>
-                        <div className="text-xs text-purple-500 mt-1">
-                          {prediction.advancedMetrics.uncertaintyLevel === 'Low' ? 'High confidence prediction' :
-                           prediction.advancedMetrics.uncertaintyLevel === 'Medium' ? 'Moderate confidence' :
-                           'Low confidence - review recommended'}
-                        </div>
-                      </div>
-                      
-                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                        <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Feature Importance</h4>
-                        <div className="text-2xl font-bold text-blue-600 mb-1">
-                          {(prediction.advancedMetrics.featureImportance?.high_importance_ratio * 100 || 0).toFixed(1)}%
-                        </div>
-                        <div className="text-sm text-blue-600">Key features detected</div>
-                        <div className="text-xs text-blue-500 mt-1">
-                          Max: {(prediction.advancedMetrics.featureImportance?.max_importance || 0).toFixed(3)}
-                        </div>
-                      </div>
-                      
-                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                        <h4 className="font-semibold text-green-700 dark:text-green-300 mb-2">Training Similarity</h4>
-                        <div className="text-2xl font-bold text-green-600 mb-1">
-                          {(prediction.advancedMetrics.similarityScores?.training_similarity * 100 || 0).toFixed(1)}%
-                        </div>
-                        <div className="text-sm text-green-600">Pattern match</div>
-                        <div className="text-xs text-green-500 mt-1">
-                          Pattern confidence: {(prediction.advancedMetrics.similarityScores?.pattern_confidence * 100 || 0).toFixed(1)}%
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Detailed Similarity Analysis */}
-                    <div className="bg-gray-50 dark:bg-slate-700 p-4 rounded-lg">
-                      <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">Pattern Analysis</h4>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-red-600">Fraud Pattern Similarity</span>
-                            <span className="font-bold text-red-600">
-                              {(prediction.advancedMetrics.similarityScores?.fraud_pattern_similarity * 100 || 0).toFixed(1)}%
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded h-2">
-                            <div 
-                              className="bg-red-500 h-2 rounded transition-all duration-1000" 
-                              style={{width: `${(prediction.advancedMetrics.similarityScores?.fraud_pattern_similarity * 100 || 0)}%`}}
-                            ></div>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-green-600">Normal Pattern Similarity</span>
-                            <span className="font-bold text-green-600">
-                              {(prediction.advancedMetrics.similarityScores?.normal_pattern_similarity * 100 || 0).toFixed(1)}%
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded h-2">
-                            <div 
-                              className="bg-green-500 h-2 rounded transition-all duration-1000" 
-                              style={{width: `${(prediction.advancedMetrics.similarityScores?.normal_pattern_similarity * 100 || 0)}%`}}
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* Model Source Indicator */}
                 <div className={`p-4 rounded-xl border-2 shadow-sm ${
@@ -626,10 +461,7 @@ const FraudDetection = () => {
                         <CheckCircle className="h-5 w-5" />
                         <div>
                           <p className="font-bold">✅ Real AI Model Active</p>
-                          <p className="text-xs opacity-75">
-                            PyTorch {prediction.modelMetrics?.model_architecture || 'EfficientNet-B1'} 
-                            ({prediction.modelMetrics ? (prediction.modelMetrics.accuracy * 100).toFixed(1) : '91.4'}% accuracy) • Source: {modelSource}
-                          </p>
+                          <p className="text-xs opacity-75">PyTorch EfficientNet-B1 (91.4% accuracy) • Source: {modelSource}</p>
                         </div>
                       </>
                     ) : (
