@@ -2,17 +2,57 @@ import { useEffect } from "react";
 import { SignIn, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { Shield, Brain, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const AuthPage = () => {
-  const { user, isLoaded } = useUser();
   const navigate = useNavigate();
+  
+  // Development mode check
+  const isDevelopment = !import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  
+  // Only use Clerk hooks if not in development mode
+  const { user, isLoaded } = isDevelopment ? { user: null, isLoaded: true } : useUser();
 
   // Redirect to dashboard if already signed in
   useEffect(() => {
+    if (isDevelopment) {
+      // In development mode, go directly to dashboard
+      return;
+    }
+    
     if (isLoaded && user) {
       navigate("/dashboard");
     }
-  }, [isLoaded, user, navigate]);
+  }, [isLoaded, user, navigate, isDevelopment]);
+
+  // Development mode - simple redirect to dashboard
+  if (isDevelopment) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
+        <div className="max-w-4xl w-full text-center text-white space-y-8">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <Shield size={48} className="text-blue-400" />
+            <h1 className="text-4xl font-bold">FraudGuard AI</h1>
+          </div>
+          
+          <h2 className="text-3xl font-semibold mb-4">
+            Development Mode
+          </h2>
+          <p className="text-xl text-gray-300 mb-8">
+            Authentication is disabled for development. Click below to access the dashboard.
+          </p>
+          
+          <Button 
+            size="lg" 
+            className="bg-blue-600 hover:bg-blue-700" 
+            onClick={() => navigate("/dashboard")}
+          >
+            Enter Dashboard
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
