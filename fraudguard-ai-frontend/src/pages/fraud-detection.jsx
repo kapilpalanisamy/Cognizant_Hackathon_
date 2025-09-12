@@ -52,6 +52,11 @@ const FraudDetection = () => {
           : '/.netlify/functions/predict-fraud';
         
         console.log('Making API call to:', apiUrl);
+        
+        // Show progress to user
+        const startTime = Date.now();
+        console.log('Starting ML analysis at:', new Date().toISOString());
+        
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
@@ -72,6 +77,9 @@ const FraudDetection = () => {
         }
 
         const result = await response.json();
+        const endTime = Date.now();
+        const processingTime = ((endTime - startTime) / 1000).toFixed(1);
+        console.log(`Analysis completed in ${processingTime}s`);
         console.log('API Response data:', result);
         
         if (result.success) {
@@ -210,7 +218,14 @@ const FraudDetection = () => {
             {loading && (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p>Analyzing image with AI model...</p>
+                <p className="text-lg font-medium mb-2">🧠 AI is analyzing your image...</p>
+                <p className="text-sm text-gray-600 mb-4">This may take 30-60 seconds for the first analysis</p>
+                <div className="space-y-2 text-xs text-gray-500 max-w-md mx-auto">
+                  <p>• Converting image to analysis format</p>
+                  <p>• Running neural network detection</p>
+                  <p>• Calculating fraud probability</p>
+                  <p>• Generating recommendations</p>
+                </div>
               </div>
             )}
 
