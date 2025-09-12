@@ -101,10 +101,17 @@ const RiskAssessment = () => {
     } catch (error) {
       console.error('Analysis failed:', error);
       
-      // Show user-friendly error message
-      const errorMessage = error.message.includes('Failed to fetch') 
-        ? 'ML API service is not available. Please make sure the ML API is running on port 8000.'
-        : `Analysis failed: ${error.message}`;
+      // Show user-friendly error message based on error type
+      let errorMessage;
+      if (error.message.includes('Failed to fetch')) {
+        errorMessage = 'Network error: Unable to connect to the fraud detection service.';
+      } else if (error.message.includes('504')) {
+        errorMessage = 'Service timeout: The analysis is taking longer than expected. Please try again.';
+      } else if (error.message.includes('API request failed')) {
+        errorMessage = 'The fraud detection service is temporarily unavailable. Please try again in a few moments.';
+      } else {
+        errorMessage = `Analysis failed: ${error.message}`;
+      }
         
       alert(errorMessage);
     } finally {

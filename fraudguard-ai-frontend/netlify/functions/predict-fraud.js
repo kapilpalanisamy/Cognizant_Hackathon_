@@ -27,9 +27,16 @@ exports.handler = async (event, context) => {
   try {
     const { imageData, claimDetails } = JSON.parse(event.body);
     
-    // Try to call your real ML API first
+    // Try to call your real ML API first with timeout
     try {
-      const response = await fetch(`${ML_API_URL}/predict-base64`, {
+      console.log('Attempting to connect to ML API:', ML_API_URL);
+      
+      // Create a timeout promise
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('API timeout')), 8000) // 8 second timeout
+      );
+      
+      const fetchPromise = fetch(`${ML_API_URL}/predict-base64`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,8 +46,11 @@ exports.handler = async (event, context) => {
         })
       });
 
+      const response = await Promise.race([fetchPromise, timeoutPromise]);
+
       if (response.ok) {
         const result = await response.json();
+        console.log('ML API response received successfully');
         
         return {
           statusCode: 200,
@@ -56,9 +66,13 @@ exports.handler = async (event, context) => {
             source: 'real_model'
           })
         };
+      } else {
+        console.warn(`ML API returned status: ${response.status}`);
+        throw new Error(`API returned ${response.status}`);
       }
     } catch (apiError) {
       console.warn('ML API not available:', apiError.message);
+      // Continue to fallback
     }
     
     // Fallback to mock prediction if ML API is not available
