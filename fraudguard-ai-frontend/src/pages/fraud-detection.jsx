@@ -47,10 +47,10 @@ const FraudDetection = () => {
         console.log('File read successfully, converting to base64...');
         const base64 = reader.result.split(',')[1];
         
-        // Use real ML API in development, Netlify function in production
+        // Use real ML API through Netlify function in production for CORS handling
         const apiUrl = import.meta.env.DEV 
-          ? 'http://localhost:8001/predict-base64'  // Real ML API
-          : '/.netlify/functions/predict-fraud';
+          ? 'https://fraudguard-ai-backend.onrender.com/predict-base64'  // Direct API in dev
+          : '/.netlify/functions/predict-fraud';  // Netlify function in production
         
         console.log('Making API call to:', apiUrl);
         
@@ -86,12 +86,12 @@ const FraudDetection = () => {
         if (result.success) {
           console.log('Setting prediction from result.prediction:', result.prediction);
           setPrediction(result.prediction);
-          setModelSource(result.source || 'unknown');
+          setModelSource(result.source || 'real_model');
         } else if (result.prediction) {
           // Handle direct ML API response format
           console.log('Setting prediction from direct result.prediction:', result.prediction);
           setPrediction(result.prediction);
-          setModelSource(result.source || 'direct_api');
+          setModelSource('real_model');  // Direct API response is from real model
         } else {
           console.error('Invalid response format:', result);
           throw new Error('Invalid response format');
