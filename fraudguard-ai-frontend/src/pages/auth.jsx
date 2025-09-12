@@ -13,20 +13,20 @@ const AuthPage = () => {
   // Only use Clerk hooks if not in development mode
   const { user, isLoaded } = isDevelopment ? { user: null, isLoaded: true } : useUser();
 
-  // Insurance and tech companies using fraud detection
-  const partnerCompanies = [
-    { name: "Allstate", logo: "🛡️" },
-    { name: "State Farm", logo: "🏢" },
-    { name: "Progressive", logo: "📈" },
-    { name: "GEICO", logo: "🦎" },
-    { name: "Liberty Mutual", logo: "🗽" },
-    { name: "Farmers", logo: "🚜" },
-    { name: "USAA", logo: "⭐" },
-    { name: "Nationwide", logo: "🌐" },
-    { name: "Travelers", logo: "🧳" },
-    { name: "Hartford", logo: "🦌" },
-    { name: "Chubb", logo: "🔒" },
-    { name: "AXA", logo: "🔷" }
+  // Insurance fraud detection features
+  const fraudDetectionFeatures = [
+    { name: "AI Image Analysis", icon: "🧠" },
+    { name: "Damage Assessment", icon: "🔍" },
+    { name: "Fraud Probability", icon: "�" },
+    { name: "Instant Reports", icon: "📄" },
+    { name: "Risk Scoring", icon: "⚡" },
+    { name: "Pattern Detection", icon: "🎯" },
+    { name: "Vehicle Analysis", icon: "🚗" },
+    { name: "Claim Verification", icon: "✅" },
+    { name: "ML Predictions", icon: "�" },
+    { name: "Data Security", icon: "🔒" },
+    { name: "Real-time Processing", icon: "⚡" },
+    { name: "Professional PDFs", icon: "�" }
   ];
 
   // Redirect to fraud detection if already signed in
@@ -60,13 +60,13 @@ const AuthPage = () => {
 
           {/* Animated Scrolling Banner for Dev Mode */}
           <div className="p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 mb-8">
-            <h3 className="text-lg font-semibold mb-4">Trusted by Leading Insurance Companies</h3>
+            <h3 className="text-lg font-semibold mb-4">Advanced AI-Powered Features</h3>
             <div className="relative overflow-hidden">
               <div className="flex animate-scroll whitespace-nowrap">
-                {[...partnerCompanies, ...partnerCompanies].map((company, index) => (
-                  <div key={index} className="flex items-center mx-8 flex-shrink-0">
-                    <span className="text-2xl mr-2">{company.logo}</span>
-                    <span className="text-gray-300 font-medium">{company.name}</span>
+                {[...fraudDetectionFeatures, ...fraudDetectionFeatures].map((feature, index) => (
+                  <div key={index} className="flex items-center mx-6 flex-shrink-0">
+                    <span className="text-xl mr-2">{feature.icon}</span>
+                    <span className="text-gray-300 font-medium text-sm">{feature.name}</span>
                   </div>
                 ))}
               </div>
@@ -121,15 +121,15 @@ const AuthPage = () => {
           </div>
 
           <div className="p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-            <h3 className="text-lg font-semibold mb-4 text-center">Trusted by Leading Insurance Companies</h3>
+            <h3 className="text-lg font-semibold mb-4 text-center">Advanced AI-Powered Features</h3>
             
             {/* Animated Scrolling Banner */}
             <div className="relative overflow-hidden">
               <div className="flex animate-scroll whitespace-nowrap">
-                {[...partnerCompanies, ...partnerCompanies].map((company, index) => (
-                  <div key={index} className="flex items-center mx-8 flex-shrink-0">
-                    <span className="text-2xl mr-2">{company.logo}</span>
-                    <span className="text-gray-300 font-medium">{company.name}</span>
+                {[...fraudDetectionFeatures, ...fraudDetectionFeatures].map((feature, index) => (
+                  <div key={index} className="flex items-center mx-6 flex-shrink-0">
+                    <span className="text-xl mr-2">{feature.icon}</span>
+                    <span className="text-gray-300 font-medium text-sm">{feature.name}</span>
                   </div>
                 ))}
               </div>
