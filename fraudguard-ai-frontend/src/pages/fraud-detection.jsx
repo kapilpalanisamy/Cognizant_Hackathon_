@@ -40,6 +40,18 @@ const RiskAssessment = () => {
 
     console.log('Starting analysis...');
     setLoading(true);
+    
+    // Show specific loading message for potential cold start
+    const isProduction = !import.meta.env.DEV;
+    if (isProduction) {
+      // In production, warn about potential cold start delay
+      setTimeout(() => {
+        if (loading) {
+          alert('⏱️ First-time analysis may take 30-60 seconds as the ML service starts up. Please wait...');
+        }
+      }, 5000); // Show message after 5 seconds if still loading
+    }
+    
     try {
       // Convert file to base64
       const reader = new FileReader();

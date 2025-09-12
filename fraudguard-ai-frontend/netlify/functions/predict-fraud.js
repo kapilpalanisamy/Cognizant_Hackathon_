@@ -27,13 +27,14 @@ exports.handler = async (event, context) => {
   try {
     const { imageData, claimDetails } = JSON.parse(event.body);
     
-    // Try to call your real ML API first with timeout
+    // Try to call your real ML API first with extended timeout for Render cold starts
     try {
       console.log('Attempting to connect to ML API:', ML_API_URL);
       
-      // Create a timeout promise
+      // Render free tier can take up to 60+ seconds for cold start
+      // We'll use a longer timeout but still within Netlify's limits
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('API timeout')), 8000) // 8 second timeout
+        setTimeout(() => reject(new Error('API timeout after 25 seconds')), 25000) // 25 second timeout for cold starts
       );
       
       const fetchPromise = fetch(`${ML_API_URL}/predict-base64`, {
@@ -46,11 +47,12 @@ exports.handler = async (event, context) => {
         })
       });
 
+      console.log('Waiting for ML API response (this may take time for first request on Render free tier)...');
       const response = await Promise.race([fetchPromise, timeoutPromise]);
 
       if (response.ok) {
         const result = await response.json();
-        console.log('ML API response received successfully');
+        console.log('ML API response received successfully:', result);
         
         return {
           statusCode: 200,
@@ -60,18 +62,24 @@ exports.handler = async (event, context) => {
           },
           body: JSON.stringify({
             success: true,
-            prediction: result.prediction,
+            prediction: result.prediction || result, // Handle different response formats
             timestamp: new Date().toISOString(),
-            processingTime: result.prediction?.processingTime || 'N/A',
+            processingTime: result.prediction?.processingTime || result.processingTime || 'N/A',
             source: 'real_model'
           })
         };
       } else {
         console.warn(`ML API returned status: ${response.status}`);
-        throw new Error(`API returned ${response.status}`);
+        throw new Error(`API returned ${response.status}: ${response.statusText}`);
       }
     } catch (apiError) {
       console.warn('ML API not available:', apiError.message);
+      
+      // If it's a timeout, show a specific message
+      if (apiError.message.includes('timeout')) {
+        console.warn('ML API timed out - likely a cold start delay on Render free tier');
+      }
+      
       // Continue to fallback
     }
     
