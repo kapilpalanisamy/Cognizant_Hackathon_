@@ -10,6 +10,8 @@ import { Shield, Upload, BarChart3 } from "lucide-react";
 const Header = () => {
   // Development mode check
   const isDevelopment = !import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  
+  // Only use Clerk hooks in production mode
   const { user } = isDevelopment ? { user: null } : useUser();
 
   return (
@@ -38,6 +40,9 @@ const Header = () => {
                   Analyze Image
                 </Button>
               </Link>
+              <Button variant="ghost" className="rounded-full">
+                Dev Mode
+              </Button>
             </>
           ) : (
             // Production mode with Clerk authentication

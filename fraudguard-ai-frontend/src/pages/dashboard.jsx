@@ -14,7 +14,9 @@ import {
 } from "lucide-react";
 
 const Dashboard = () => {
-  const { user } = useUser();
+  // Development mode check
+  const isDevelopment = !import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  const { user } = isDevelopment ? { user: { firstName: 'Developer' } } : useUser();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
@@ -27,6 +29,7 @@ const Dashboard = () => {
           </h1>
           <p className="text-gray-600 dark:text-gray-300 text-lg">
             Ready to analyze insurance claims with AI-powered fraud detection
+            {isDevelopment && ' (Development Mode)'}
           </p>
         </div>
 
