@@ -17,7 +17,6 @@ import base64
 import time
 import uvicorn
 import math
-from scipy import stats
 
 app = FastAPI(title="FraudGuard AI - Real ML API", version="1.0.0")
 
