@@ -1,5 +1,5 @@
 // Real ML API integration with your PyTorch model
-const ML_API_URL = process.env.ML_API_URL || 'http://localhost:8000';
+const ML_API_URL = process.env.ML_API_URL || 'https://fraudguard-ai-backend.onrender.com';
 
 exports.handler = async (event, context) => {
   // Handle CORS
