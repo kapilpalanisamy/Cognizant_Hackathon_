@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SignIn, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import { Shield, Brain, CheckCircle } from "lucide-react";
+import { Shield, Brain, CheckCircle, Building2, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AuthPage = () => {
@@ -12,6 +12,22 @@ const AuthPage = () => {
   
   // Only use Clerk hooks if not in development mode
   const { user, isLoaded } = isDevelopment ? { user: null, isLoaded: true } : useUser();
+
+  // Insurance and tech companies using fraud detection
+  const partnerCompanies = [
+    { name: "Allstate", logo: "🛡️" },
+    { name: "State Farm", logo: "🏢" },
+    { name: "Progressive", logo: "📈" },
+    { name: "GEICO", logo: "🦎" },
+    { name: "Liberty Mutual", logo: "🗽" },
+    { name: "Farmers", logo: "🚜" },
+    { name: "USAA", logo: "⭐" },
+    { name: "Nationwide", logo: "🌐" },
+    { name: "Travelers", logo: "🧳" },
+    { name: "Hartford", logo: "🦌" },
+    { name: "Chubb", logo: "🔒" },
+    { name: "AXA", logo: "🔷" }
+  ];
 
   // Redirect to fraud detection if already signed in
   useEffect(() => {
@@ -41,6 +57,21 @@ const AuthPage = () => {
           <p className="text-xl text-gray-300 mb-8">
             Authentication is disabled for development. Click below to access the AI fraud detection system.
           </p>
+
+          {/* Animated Scrolling Banner for Dev Mode */}
+          <div className="p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 mb-8">
+            <h3 className="text-lg font-semibold mb-4">Trusted by Leading Insurance Companies</h3>
+            <div className="relative overflow-hidden">
+              <div className="flex animate-scroll whitespace-nowrap">
+                {[...partnerCompanies, ...partnerCompanies].map((company, index) => (
+                  <div key={index} className="flex items-center mx-8 flex-shrink-0">
+                    <span className="text-2xl mr-2">{company.logo}</span>
+                    <span className="text-gray-300 font-medium">{company.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
           
           <Button 
             size="lg" 
@@ -90,13 +121,34 @@ const AuthPage = () => {
           </div>
 
           <div className="p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-            <h3 className="text-lg font-semibold mb-2">What you'll get access to:</h3>
-            <ul className="space-y-2 text-gray-300">
-              <li>• Upload and analyze vehicle damage images</li>
-              <li>• Get instant fraud probability scores</li>
-              <li>• Generate detailed PDF reports</li>
-              <li>• Access to analytics dashboard</li>
-            </ul>
+            <h3 className="text-lg font-semibold mb-4 text-center">Trusted by Leading Insurance Companies</h3>
+            
+            {/* Animated Scrolling Banner */}
+            <div className="relative overflow-hidden">
+              <div className="flex animate-scroll whitespace-nowrap">
+                {[...partnerCompanies, ...partnerCompanies].map((company, index) => (
+                  <div key={index} className="flex items-center mx-8 flex-shrink-0">
+                    <span className="text-2xl mr-2">{company.logo}</span>
+                    <span className="text-gray-300 font-medium">{company.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="mt-4 space-y-3">
+              <div className="flex items-center gap-3">
+                <TrendingUp className="text-green-400" size={20} />
+                <span className="text-sm text-gray-300">Real-time fraud probability analysis</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Building2 className="text-blue-400" size={20} />
+                <span className="text-sm text-gray-300">Enterprise-grade security & compliance</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Zap className="text-yellow-400" size={20} />
+                <span className="text-sm text-gray-300">Instant PDF reports & analytics dashboard</span>
+              </div>
+            </div>
           </div>
         </div>
 
