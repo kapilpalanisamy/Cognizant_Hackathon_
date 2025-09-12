@@ -31,13 +31,19 @@ const FraudDetection = () => {
   });
 
   const analyzeFraud = async () => {
-    if (!selectedFile) return;
+    console.log('Analyze button clicked!', { selectedFile, loading });
+    if (!selectedFile) {
+      console.log('No file selected, returning early');
+      return;
+    }
 
+    console.log('Starting analysis...');
     setLoading(true);
     try {
       // Convert file to base64
       const reader = new FileReader();
       reader.onload = async () => {
+        console.log('File read successfully, converting to base64...');
         const base64 = reader.result.split(',')[1];
         
         // Use real ML API in development, Netlify function in production
@@ -45,6 +51,7 @@ const FraudDetection = () => {
           ? 'http://localhost:8001/predict-base64'  // Real ML API
           : '/.netlify/functions/predict-fraud';
         
+        console.log('Making API call to:', apiUrl);
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
@@ -59,17 +66,23 @@ const FraudDetection = () => {
           })
         });
 
+        console.log('API Response status:', response.status, response.ok);
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status}`);
         }
 
         const result = await response.json();
+        console.log('API Response data:', result);
+        
         if (result.success) {
+          console.log('Setting prediction from result.prediction:', result.prediction);
           setPrediction(result.prediction);
         } else if (result.prediction) {
           // Handle direct ML API response format
+          console.log('Setting prediction from direct result.prediction:', result.prediction);
           setPrediction(result.prediction);
         } else {
+          console.error('Invalid response format:', result);
           throw new Error('Invalid response format');
         }
       };
@@ -84,6 +97,7 @@ const FraudDetection = () => {
         
       alert(errorMessage);
     } finally {
+      console.log('Analysis complete, setting loading to false');
       setLoading(false);
     }
   };
