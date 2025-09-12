@@ -7,7 +7,7 @@ import { Upload, FileImage, AlertTriangle, CheckCircle, Download, BarChart3, Bra
 import { useDropzone } from "react-dropzone";
 import { generateFraudReport } from "@/utils/pdfGenerator";
 
-const FraudDetection = () => {
+const RiskAssessment = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -128,12 +128,12 @@ const FraudDetection = () => {
 
   const getRiskColor = (riskLevel) => {
     switch (riskLevel) {
-      case 'VERY HIGH': return 'bg-red-500';
-      case 'HIGH': return 'bg-orange-500';
-      case 'MODERATE': return 'bg-yellow-500';
-      case 'LOW': return 'bg-blue-500';
-      case 'VERY LOW': return 'bg-green-500';
-      default: return 'bg-gray-500';
+      case 'VERY HIGH': return 'bg-red-700 text-white border border-red-400';
+      case 'HIGH': return 'bg-orange-600 text-white border border-orange-400';
+      case 'MODERATE': return 'bg-yellow-400 text-black border border-yellow-500';
+      case 'LOW': return 'bg-blue-500 text-white border border-blue-400';
+      case 'VERY LOW': return 'bg-green-500 text-white border border-green-400';
+      default: return 'bg-gray-500 text-white border border-gray-400';
     }
   };
 
@@ -517,4 +517,4 @@ const FraudDetection = () => {
   );
 };
 
-export default FraudDetection;
+export default RiskAssessment;

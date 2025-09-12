@@ -5,7 +5,7 @@ import ProtectedRoute from "./components/protected-route";
 import { ThemeProvider } from "./components/theme-provider";
 
 import AuthPage from "./pages/auth";
-import FraudDetection from "./pages/fraud-detection";
+import RiskAssessment from "./pages/fraud-detection";
 
 import "./App.css";
 
@@ -18,10 +18,10 @@ const router = createBrowserRouter([
     element: <AppLayout />,
     children: [
       {
-        path: "/fraud-detection",
+        path: "/risk-assessment",
         element: (
           <ProtectedRoute>
-            <FraudDetection />
+            <RiskAssessment />
           </ProtectedRoute>
         ),
       },

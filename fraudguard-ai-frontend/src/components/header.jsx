@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <>
       <nav className="py-4 flex justify-between items-center">
-        <Link to="/fraud-detection">
+  <Link to="/risk-assessment">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
               <Shield size={28} className="text-white" />
@@ -58,7 +58,7 @@ const Header = () => {
                     <UserButton.Link
                       label="AI Fraud Detection"
                       labelIcon={<Brain size={15} />}
-                      href="/fraud-detection"
+                      href="/risk-assessment"
                     />
                     <UserButton.Action label="manageAccount" />
                   </UserButton.MenuItems>

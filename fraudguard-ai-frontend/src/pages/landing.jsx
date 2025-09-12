@@ -69,7 +69,7 @@ const LandingPage = () => {
       </section>
       
       <div className="flex gap-6 justify-center">
-        <Link to="/fraud-detection">
+  <Link to="/risk-assessment">
           <Button variant="default" size="xl" className="bg-blue-600 hover:bg-blue-700">
             <Upload className="mr-2 h-5 w-5" />
             Start Analysis

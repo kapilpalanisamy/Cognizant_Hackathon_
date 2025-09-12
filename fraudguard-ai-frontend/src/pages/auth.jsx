@@ -21,7 +21,7 @@ const AuthPage = () => {
     }
     
     if (isLoaded && user) {
-      navigate("/fraud-detection");
+  navigate("/risk-assessment");
     }
   }, [isLoaded, user, navigate, isDevelopment]);
 
@@ -45,7 +45,7 @@ const AuthPage = () => {
           <Button 
             size="lg" 
             className="bg-blue-600 hover:bg-blue-700" 
-            onClick={() => navigate("/fraud-detection")}
+            onClick={() => navigate("/risk-assessment")}
           >
             Start AI Analysis
           </Button>
