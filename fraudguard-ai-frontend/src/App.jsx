@@ -5,7 +5,6 @@ import ProtectedRoute from "./components/protected-route";
 import { ThemeProvider } from "./components/theme-provider";
 
 import AuthPage from "./pages/auth";
-import Dashboard from "./pages/dashboard";
 import FraudDetection from "./pages/fraud-detection";
 
 import "./App.css";
@@ -18,14 +17,6 @@ const router = createBrowserRouter([
   {
     element: <AppLayout />,
     children: [
-      {
-        path: "/dashboard",
-        element: (
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        ),
-      },
       {
         path: "/fraud-detection",
         element: (

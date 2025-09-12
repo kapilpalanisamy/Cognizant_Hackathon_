@@ -5,7 +5,7 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
-import { Shield, Upload, BarChart3 } from "lucide-react";
+import { Shield, Brain } from "lucide-react";
 
 const Header = () => {
   // Development mode check
@@ -17,49 +17,35 @@ const Header = () => {
   return (
     <>
       <nav className="py-4 flex justify-between items-center">
-        <Link to="/dashboard">
-          <div className="flex items-center gap-2">
-            <Shield size={32} className="text-blue-600" />
-            <span className="text-2xl font-bold">FraudGuard AI</span>
+        <Link to="/fraud-detection">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
+              <Shield size={28} className="text-white" />
+            </div>
+            <div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                FraudGuard AI
+              </span>
+              <p className="text-xs text-slate-500 -mt-1">Advanced Fraud Detection</p>
+            </div>
           </div>
         </Link>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           {isDevelopment ? (
-            // Development mode - show navigation without auth
+            // Development mode - simplified navigation
             <>
-              <Link to="/dashboard">
-                <Button variant="outline" className="rounded-full">
-                  <BarChart3 size={20} className="mr-2" />
-                  Dashboard
-                </Button>
-              </Link>
-              <Link to="/fraud-detection">
-                <Button variant="default" className="rounded-full">
-                  <Upload size={20} className="mr-2" />
-                  Analyze Image
-                </Button>
-              </Link>
-              <Button variant="ghost" className="rounded-full">
-                Dev Mode
-              </Button>
+              <div className="flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">
+                <span>🛠️ Development Mode</span>
+              </div>
             </>
           ) : (
             // Production mode with Clerk authentication
             <>
               <SignedIn>
-                <Link to="/dashboard">
-                  <Button variant="outline" className="rounded-full">
-                    <BarChart3 size={20} className="mr-2" />
-                    Dashboard
-                  </Button>
-                </Link>
-                <Link to="/fraud-detection">
-                  <Button variant="default" className="rounded-full">
-                    <Upload size={20} className="mr-2" />
-                    Analyze Image
-                  </Button>
-                </Link>
+                <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                  <span>✅ Authenticated</span>
+                </div>
                 <UserButton
                   appearance={{
                     elements: {
@@ -70,13 +56,8 @@ const Header = () => {
                 >
                   <UserButton.MenuItems>
                     <UserButton.Link
-                      label="Dashboard"
-                      labelIcon={<BarChart3 size={15} />}
-                      href="/dashboard"
-                    />
-                    <UserButton.Link
-                      label="Fraud Detection"
-                      labelIcon={<Shield size={15} />}
+                      label="AI Fraud Detection"
+                      labelIcon={<Brain size={15} />}
                       href="/fraud-detection"
                     />
                     <UserButton.Action label="manageAccount" />

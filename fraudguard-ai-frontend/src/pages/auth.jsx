@@ -13,15 +13,15 @@ const AuthPage = () => {
   // Only use Clerk hooks if not in development mode
   const { user, isLoaded } = isDevelopment ? { user: null, isLoaded: true } : useUser();
 
-  // Redirect to dashboard if already signed in
+  // Redirect to fraud detection if already signed in
   useEffect(() => {
     if (isDevelopment) {
-      // In development mode, go directly to dashboard
+      // In development mode, go directly to fraud detection
       return;
     }
     
     if (isLoaded && user) {
-      navigate("/dashboard");
+      navigate("/fraud-detection");
     }
   }, [isLoaded, user, navigate, isDevelopment]);
 
@@ -39,15 +39,15 @@ const AuthPage = () => {
             Development Mode
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Authentication is disabled for development. Click below to access the dashboard.
+            Authentication is disabled for development. Click below to access the AI fraud detection system.
           </p>
           
           <Button 
             size="lg" 
             className="bg-blue-600 hover:bg-blue-700" 
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/fraud-detection")}
           >
-            Enter Dashboard
+            Start AI Analysis
           </Button>
         </div>
       </div>
