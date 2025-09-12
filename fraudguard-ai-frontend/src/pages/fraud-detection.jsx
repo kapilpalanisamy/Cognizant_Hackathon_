@@ -132,11 +132,11 @@ const RiskAssessment = () => {
     }
   };
 
-  const generateReport = () => {
+  const generateReport = async () => {
     if (!prediction || !selectedFile) return;
     
     try {
-      const fileName = generateFraudReport(prediction, selectedFile);
+      const fileName = await generateFraudReport(prediction, selectedFile);
       // Show success message
       alert(`PDF report generated successfully: ${fileName}`);
     } catch (error) {
@@ -451,18 +451,18 @@ const RiskAssessment = () => {
                     </h3>
                     <div className="space-y-3">
                       <div className={`p-3 rounded-lg ${
-                        prediction.riskLevel === 'VERY LOW' ? 'bg-green-50 border border-green-200' :
-                        prediction.riskLevel === 'LOW' ? 'bg-blue-50 border border-blue-200' :
-                        prediction.riskLevel === 'MODERATE' ? 'bg-yellow-50 border border-yellow-200' :
-                        prediction.riskLevel === 'HIGH' ? 'bg-orange-50 border border-orange-200' :
-                        'bg-red-50 border border-red-200'
+                        prediction.riskLevel === 'VERY LOW' ? 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-200' :
+                        prediction.riskLevel === 'LOW' ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-200' :
+                        prediction.riskLevel === 'MODERATE' ? 'bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 text-yellow-800 dark:text-yellow-200' :
+                        prediction.riskLevel === 'HIGH' ? 'bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700 text-orange-800 dark:text-orange-200' :
+                        'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-200'
                       }`}>
                         <p className="font-semibold text-sm">Risk Category</p>
                         <p className="text-lg font-bold">{prediction.riskLevel}</p>
                       </div>
                       <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                        <p className="font-semibold text-sm mb-1">Recommended Action</p>
-                        <p className="text-sm">{prediction.recommendedAction}</p>
+                        <p className="font-semibold text-sm mb-1 text-slate-700 dark:text-slate-300">Recommended Action</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{prediction.recommendedAction}</p>
                       </div>
                     </div>
                   </div>
