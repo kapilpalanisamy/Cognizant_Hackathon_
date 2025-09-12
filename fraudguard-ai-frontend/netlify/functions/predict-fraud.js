@@ -29,8 +29,6 @@ exports.handler = async (event, context) => {
     
     // Try to call your real ML API first
     try {
-      console.log(`Calling ML API at: ${ML_API_URL}/predict-base64`);
-      
       const response = await fetch(`${ML_API_URL}/predict-base64`, {
         method: 'POST',
         headers: {
@@ -38,13 +36,11 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           imageData: imageData
-        }),
-        signal: AbortSignal.timeout(60000)  // 60 second timeout for ML processing
+        })
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log('ML API response successful:', result);
         
         return {
           statusCode: 200,
@@ -54,14 +50,12 @@ exports.handler = async (event, context) => {
           },
           body: JSON.stringify({
             success: true,
-            prediction: result.prediction || result,  // Handle both wrapped and direct responses
+            prediction: result.prediction,
             timestamp: new Date().toISOString(),
-            processingTime: result.prediction?.processingTime || result.processingTime || 'N/A',
+            processingTime: result.prediction?.processingTime || 'N/A',
             source: 'real_model'
           })
         };
-      } else {
-        console.error('ML API responded with error:', response.status, response.statusText);
       }
     } catch (apiError) {
       console.warn('ML API not available:', apiError.message);
