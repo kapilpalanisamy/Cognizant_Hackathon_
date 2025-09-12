@@ -529,6 +529,91 @@ const FraudDetection = () => {
                   </div>
                 </div>
 
+                {/* Advanced AI Analysis Metrics */}
+                {prediction.advancedMetrics && (
+                  <div className="bg-white dark:bg-slate-800 p-6 rounded-lg border shadow-sm col-span-1 md:col-span-2">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <Brain className="h-5 w-5 text-purple-600" />
+                      Advanced AI Analysis
+                    </h3>
+                    
+                    {/* Prediction Uncertainty */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                        <h4 className="font-semibold text-purple-700 dark:text-purple-300 mb-2">Prediction Uncertainty</h4>
+                        <div className="text-2xl font-bold text-purple-600 mb-1">
+                          {prediction.advancedMetrics.uncertaintyLevel}
+                        </div>
+                        <div className="text-sm text-purple-600">
+                          Entropy: {prediction.advancedMetrics.predictionEntropy}
+                        </div>
+                        <div className="text-xs text-purple-500 mt-1">
+                          {prediction.advancedMetrics.uncertaintyLevel === 'Low' ? 'High confidence prediction' :
+                           prediction.advancedMetrics.uncertaintyLevel === 'Medium' ? 'Moderate confidence' :
+                           'Low confidence - review recommended'}
+                        </div>
+                      </div>
+                      
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                        <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Feature Importance</h4>
+                        <div className="text-2xl font-bold text-blue-600 mb-1">
+                          {(prediction.advancedMetrics.featureImportance?.high_importance_ratio * 100 || 0).toFixed(1)}%
+                        </div>
+                        <div className="text-sm text-blue-600">Key features detected</div>
+                        <div className="text-xs text-blue-500 mt-1">
+                          Max: {(prediction.advancedMetrics.featureImportance?.max_importance || 0).toFixed(3)}
+                        </div>
+                      </div>
+                      
+                      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                        <h4 className="font-semibold text-green-700 dark:text-green-300 mb-2">Training Similarity</h4>
+                        <div className="text-2xl font-bold text-green-600 mb-1">
+                          {(prediction.advancedMetrics.similarityScores?.training_similarity * 100 || 0).toFixed(1)}%
+                        </div>
+                        <div className="text-sm text-green-600">Pattern match</div>
+                        <div className="text-xs text-green-500 mt-1">
+                          Pattern confidence: {(prediction.advancedMetrics.similarityScores?.pattern_confidence * 100 || 0).toFixed(1)}%
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Detailed Similarity Analysis */}
+                    <div className="bg-gray-50 dark:bg-slate-700 p-4 rounded-lg">
+                      <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">Pattern Analysis</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm text-red-600">Fraud Pattern Similarity</span>
+                            <span className="font-bold text-red-600">
+                              {(prediction.advancedMetrics.similarityScores?.fraud_pattern_similarity * 100 || 0).toFixed(1)}%
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded h-2">
+                            <div 
+                              className="bg-red-500 h-2 rounded transition-all duration-1000" 
+                              style={{width: `${(prediction.advancedMetrics.similarityScores?.fraud_pattern_similarity * 100 || 0)}%`}}
+                            ></div>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm text-green-600">Normal Pattern Similarity</span>
+                            <span className="font-bold text-green-600">
+                              {(prediction.advancedMetrics.similarityScores?.normal_pattern_similarity * 100 || 0).toFixed(1)}%
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded h-2">
+                            <div 
+                              className="bg-green-500 h-2 rounded transition-all duration-1000" 
+                              style={{width: `${(prediction.advancedMetrics.similarityScores?.normal_pattern_similarity * 100 || 0)}%`}}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Model Source Indicator */}
                 <div className={`p-4 rounded-xl border-2 shadow-sm ${
                   modelSource === 'real_model' 
