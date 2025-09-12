@@ -528,14 +528,13 @@ const FraudDetection = () => {
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Model Source Indicator */}
-              <div className={`p-4 rounded-xl border-2 shadow-sm ${
-                modelSource === 'real_model' 
-                  ? 'bg-green-50 border-green-200 text-green-800' 
-                  : 'bg-orange-50 border-orange-200 text-orange-800'
-              }`}>
+                {/* Model Source Indicator */}
+                <div className={`p-4 rounded-xl border-2 shadow-sm ${
+                  modelSource === 'real_model' 
+                    ? 'bg-green-50 border-green-200 text-green-800' 
+                    : 'bg-orange-50 border-orange-200 text-orange-800'
+                }`}>
                   <div className="flex items-center gap-3 text-sm font-medium">
                     {modelSource === 'real_model' ? (
                       <>
