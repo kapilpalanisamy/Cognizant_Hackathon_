@@ -40,15 +40,7 @@ export const generateFraudReport = (prediction, selectedFile) => {
   pdf.text('Analysis Results', 20, 100);
   
 
-  // Prediction
-  pdf.setFontSize(16);
-  let predColor = prediction.prediction === 'FRAUD' ? [255, 0, 0] : [0, 128, 0];
-  pdf.setTextColor(...predColor);
-  pdf.text(`Prediction: ${prediction.prediction}`, 25, 115);
-  
-  pdf.setFontSize(12);
-  pdf.setTextColor(60, 60, 60);
-  pdf.text(`Confidence: ${prediction.confidence}%`, 25, 125);
+  // ...existing code...
   
   // Add prediction results
   pdf.setFontSize(14);
@@ -57,29 +49,14 @@ export const generateFraudReport = (prediction, selectedFile) => {
 
   // Prediction
   pdf.setFontSize(16);
-  const predictionColor = prediction.prediction === 'FRAUD' ? [255, 0, 0] : [0, 128, 0];
-  pdf.setTextColor(...predictionColor);
+  const predColor = prediction.prediction === 'FRAUD' ? [255, 0, 0] : [0, 128, 0];
+  pdf.setTextColor(...predColor);
   pdf.text(`Prediction: ${prediction.prediction}`, 25, 115);
 
   pdf.setFontSize(12);
   pdf.setTextColor(60, 60, 60);
   pdf.text(`Confidence: ${prediction.confidence}%`, 25, 125);
   pdf.text(`Risk Level: ${prediction.riskLevel}`, 25, 135);
-
-  // Detailed Risk Assessment
-  pdf.setFontSize(13);
-  pdf.setTextColor(200, 0, 0);
-  pdf.text('Risk Assessment:', 25, 145);
-  pdf.setFontSize(11);
-  pdf.setTextColor(60, 60, 60);
-  pdf.text(`Category: ${prediction.riskLevel}`, 30, 155);
-  pdf.text(`Recommended Action: ${prediction.recommendedAction}`, 30, 165);
-
-  // Probabilities
-  pdf.setFontSize(12);
-  pdf.setTextColor(40, 40, 40);
-  pdf.text('Probability Breakdown:', 25, 180);
-  pdf.setFontSize(11);
   pdf.setTextColor(60, 60, 60);
   pdf.text(`• Fraud Probability: ${prediction.fraudProbability}%`, 30, 190);
   pdf.text(`• Non-Fraud Probability: ${prediction.nonFraudProbability}%`, 30, 200);
@@ -114,3 +91,4 @@ export const generateFraudReport = (prediction, selectedFile) => {
   const fileName = `fraud-analysis-${selectedFile.name.split('.')[0]}-${Date.now()}.pdf`;
   pdf.save(fileName);
   return fileName;
+}
