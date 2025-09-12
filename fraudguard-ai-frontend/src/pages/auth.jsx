@@ -156,8 +156,8 @@ const AuthPage = () => {
         <div className="flex justify-center lg:justify-end">
           <div className="w-full max-w-md">
             <SignIn
-              signUpForceRedirectUrl="/dashboard"
-              fallbackRedirectUrl="/dashboard"
+              signUpForceRedirectUrl="/risk-assessment"
+              fallbackRedirectUrl="/risk-assessment"
               appearance={{
                 elements: {
                   formButtonPrimary: "bg-blue-600 hover:bg-blue-700",
