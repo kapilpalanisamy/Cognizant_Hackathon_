@@ -3,9 +3,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Upload, FileImage, AlertTriangle, CheckCircle, Download, BarChart3, Brain, Clock, Shield } from "lucide-react";
+import { Upload, FileImage, AlertTriangle, CheckCircle, Download, BarChart3, Brain, Clock, Shield, TrendingUp, PieChart, Activity } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { generateFraudReport } from "@/utils/pdfGenerator";
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer, 
+  PieChart as RechartsPieChart, 
+  Pie,
+  Cell, 
+  LineChart, 
+  Line, 
+  Area, 
+  AreaChart,
+  RadialBarChart,
+  RadialBar,
+  Legend
+} from 'recharts';
 
 const RiskAssessment = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -13,6 +32,38 @@ const RiskAssessment = () => {
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [modelSource, setModelSource] = useState(null);
+
+  // Sample analytics data for charts
+  const monthlyFraudData = [
+    { month: 'Jan', fraud: 23, legitimate: 87 },
+    { month: 'Feb', fraud: 31, legitimate: 92 },
+    { month: 'Mar', fraud: 18, legitimate: 104 },
+    { month: 'Apr', fraud: 28, legitimate: 98 },
+    { month: 'May', fraud: 35, legitimate: 85 },
+    { month: 'Jun', fraud: 22, legitimate: 110 }
+  ];
+
+  const riskDistribution = [
+    { name: 'Low Risk', value: 65, color: '#10B981' },
+    { name: 'Medium Risk', value: 25, color: '#F59E0B' },
+    { name: 'High Risk', value: 10, color: '#EF4444' }
+  ];
+
+  const confidenceMetrics = [
+    { name: 'Model Accuracy', value: 91.4, color: '#8B5CF6' },
+    { name: 'Precision', value: 89.2, color: '#06B6D4' },
+    { name: 'Recall', value: 93.7, color: '#10B981' },
+    { name: 'F1-Score', value: 91.4, color: '#F59E0B' }
+  ];
+
+  const timeSeriesData = [
+    { time: '00:00', fraudAttempts: 2, legitClaims: 15 },
+    { time: '04:00', fraudAttempts: 1, legitClaims: 8 },
+    { time: '08:00', fraudAttempts: 5, legitClaims: 25 },
+    { time: '12:00', fraudAttempts: 8, legitClaims: 42 },
+    { time: '16:00', fraudAttempts: 12, legitClaims: 38 },
+    { time: '20:00', fraudAttempts: 6, legitClaims: 28 }
+  ];
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -526,6 +577,225 @@ const RiskAssessment = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Analytics Dashboard */}
+        <div className="space-y-6 mt-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-2">
+              Analytics Dashboard
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400">
+              Real-time insights and performance metrics
+            </p>
+          </div>
+
+          {/* Key Metrics Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Total Claims</p>
+                    <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">1,247</p>
+                  </div>
+                  <Activity className="h-8 w-8 text-blue-500" />
+                </div>
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">+12% from last month</p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 border-red-200 dark:border-red-700">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-red-600 dark:text-red-400">Fraud Detected</p>
+                    <p className="text-2xl font-bold text-red-900 dark:text-red-100">157</p>
+                  </div>
+                  <AlertTriangle className="h-8 w-8 text-red-500" />
+                </div>
+                <p className="text-xs text-red-600 dark:text-red-400 mt-2">-8% from last month</p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-green-600 dark:text-green-400">Accuracy Rate</p>
+                    <p className="text-2xl font-bold text-green-900 dark:text-green-100">91.4%</p>
+                  </div>
+                  <CheckCircle className="h-8 w-8 text-green-500" />
+                </div>
+                <p className="text-xs text-green-600 dark:text-green-400 mt-2">+2.1% improvement</p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-purple-600 dark:text-purple-400">Savings</p>
+                    <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">$2.4M</p>
+                  </div>
+                  <TrendingUp className="h-8 w-8 text-purple-500" />
+                </div>
+                <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">+24% saved</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Monthly Fraud Trends */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5" />
+                  Monthly Fraud vs Legitimate Claims
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={monthlyFraudData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="fraud" fill="#EF4444" name="Fraud Cases" />
+                    <Bar dataKey="legitimate" fill="#10B981" name="Legitimate Claims" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Risk Distribution Pie Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <PieChart className="h-5 w-5" />
+                  Risk Distribution
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <RechartsPieChart>
+                    <Pie
+                      data={riskDistribution}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {riskDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </RechartsPieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Model Performance Metrics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Brain className="h-5 w-5" />
+                  Model Performance Metrics
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <RadialBarChart cx="50%" cy="50%" innerRadius="10%" outerRadius="80%" data={confidenceMetrics}>
+                    <RadialBar dataKey="value" cornerRadius={10} fill="#8884d8" />
+                    <Legend />
+                    <Tooltip />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Real-time Activity */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-5 w-5" />
+                  24-Hour Activity Pattern
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={timeSeriesData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area 
+                      type="monotone" 
+                      dataKey="fraudAttempts" 
+                      stackId="1" 
+                      stroke="#EF4444" 
+                      fill="#EF4444" 
+                      fillOpacity={0.6}
+                      name="Fraud Attempts"
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="legitClaims" 
+                      stackId="1" 
+                      stroke="#10B981" 
+                      fill="#10B981" 
+                      fillOpacity={0.6}
+                      name="Legitimate Claims"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Additional Insights */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <Shield className="h-6 w-6 text-indigo-600" />
+                  <h3 className="font-semibold text-indigo-900 dark:text-indigo-100">Security Score</h3>
+                </div>
+                <div className="text-3xl font-bold text-indigo-900 dark:text-indigo-100 mb-2">98.5%</div>
+                <p className="text-sm text-indigo-600 dark:text-indigo-400">System security rating</p>
+                <Progress value={98.5} className="mt-3" />
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <Clock className="h-6 w-6 text-amber-600" />
+                  <h3 className="font-semibold text-amber-900 dark:text-amber-100">Avg. Processing</h3>
+                </div>
+                <div className="text-3xl font-bold text-amber-900 dark:text-amber-100 mb-2">2.3s</div>
+                <p className="text-sm text-amber-600 dark:text-amber-400">Per image analysis</p>
+                <Progress value={85} className="mt-3" />
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <TrendingUp className="h-6 w-6 text-emerald-600" />
+                  <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">Detection Rate</h3>
+                </div>
+                <div className="text-3xl font-bold text-emerald-900 dark:text-emerald-100 mb-2">96.2%</div>
+                <p className="text-sm text-emerald-600 dark:text-emerald-400">Fraud identification</p>
+                <Progress value={96.2} className="mt-3" />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
