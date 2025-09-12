@@ -4,18 +4,27 @@ import AppLayout from "./layouts/app-layout";
 import ProtectedRoute from "./components/protected-route";
 import { ThemeProvider } from "./components/theme-provider";
 
-import LandingPage from "./pages/landing";
+import AuthPage from "./pages/auth";
+import Dashboard from "./pages/dashboard";
 import FraudDetection from "./pages/fraud-detection";
 
 import "./App.css";
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <AuthPage />,
+  },
+  {
     element: <AppLayout />,
     children: [
       {
-        path: "/",
-        element: <LandingPage />,
+        path: "/dashboard",
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/fraud-detection",
