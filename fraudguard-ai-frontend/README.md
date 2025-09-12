@@ -2,7 +2,7 @@
 
 A modern React-based web application for insurance fraud detection using AI.
 
-## Features
+## ✨ Features
 
 - **Modern UI**: Built with React 18 + Vite + Tailwind CSS
 - **Component Library**: Shadcn/UI components for professional design
@@ -10,7 +10,7 @@ A modern React-based web application for insurance fraud detection using AI.
 - **Real-time AI Predictions**: Integration with ML backend API
 - **PDF Report Generation**: Automated fraud detection reports with jsPDF
 - **Responsive Design**: Mobile-friendly interface
-- **Authentication**: Clerk integration (configurable)
+- **Authentication**: Clerk integration (enabled in production)
 
 ## Tech Stack
 
