@@ -57,12 +57,7 @@ export const generateFraudReport = async (prediction, selectedFile) => {
         pdf.setFillColor(30, 58, 138); // Professional navy blue
         pdf.rect(0, 0, pageWidth, 50, 'F');
         
-        // Company Logo Area (if needed later)
-        pdf.setFillColor(255, 255, 255);
-        pdf.circle(25, 25, 8, 'F');
-        pdf.setTextColor(30, 58, 138);
-        pdf.setFontSize(10);
-        pdf.text('FG', 21, 28);
+        
         
         // Report metadata - top right aligned (positioned first to avoid overlap)
         pdf.setTextColor(255, 255, 255);
