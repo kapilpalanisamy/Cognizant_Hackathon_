@@ -16,7 +16,7 @@ export const generateFraudReport = async (prediction, selectedFile) => {
           const imageWidth = 55;
           const imageHeight = 40;
           const imageX = pageWidth - margin - imageWidth;
-          const imageY = 55;
+          const imageY = 60; // Adjusted to avoid header overlap
           
           pdf.addImage(imageData, 'JPEG', imageX, imageY, imageWidth, imageHeight);
           pdf.setFontSize(8);
@@ -55,38 +55,38 @@ export const generateFraudReport = async (prediction, selectedFile) => {
 
         // Header Section with perfect alignment
         pdf.setFillColor(30, 58, 138); // Professional navy blue
-        pdf.rect(0, 0, pageWidth, 45, 'F');
+        pdf.rect(0, 0, pageWidth, 50, 'F');
         
         // Company Logo Area (if needed later)
         pdf.setFillColor(255, 255, 255);
-        pdf.circle(25, 22, 8, 'F');
+        pdf.circle(25, 25, 8, 'F');
         pdf.setTextColor(30, 58, 138);
         pdf.setFontSize(10);
-        pdf.text('FG', 21, 25);
+        pdf.text('FG', 21, 28);
         
-        // Title - perfectly centered
+        // Report metadata - top right aligned (positioned first to avoid overlap)
         pdf.setTextColor(255, 255, 255);
-        pdf.setFontSize(20);
-        const titleText = 'INSURANCE FRAUD DETECTION REPORT';
-        const titleWidth = pdf.getTextWidth(titleText);
-        pdf.text(titleText, (pageWidth - titleWidth) / 2, 20);
-        
-        // Subtitle - centered
-        pdf.setFontSize(11);
-        const subtitleText = 'AI-Powered Claim Analysis & Risk Assessment';
-        const subtitleWidth = pdf.getTextWidth(subtitleText);
-        pdf.text(subtitleText, (pageWidth - subtitleWidth) / 2, 30);
-        
-        // Report metadata - right aligned
-        pdf.setFontSize(9);
+        pdf.setFontSize(8);
         const reportId = `FR-${Date.now().toString().slice(-6)}`;
         const reportIdText = `Report ID: ${reportId}`;
         const dateText = `Generated: ${new Date().toLocaleString()}`;
         
-        pdf.text(reportIdText, pageWidth - margin - pdf.getTextWidth(reportIdText), 20);
-        pdf.text(dateText, pageWidth - margin - pdf.getTextWidth(dateText), 30);
+        pdf.text(reportIdText, pageWidth - margin - pdf.getTextWidth(reportIdText), 15);
+        pdf.text(dateText, pageWidth - margin - pdf.getTextWidth(dateText), 22);
         
-        yPos = 60;
+        // Title - perfectly centered
+        pdf.setFontSize(18);
+        const titleText = 'INSURANCE FRAUD DETECTION REPORT';
+        const titleWidth = pdf.getTextWidth(titleText);
+        pdf.text(titleText, (pageWidth - titleWidth) / 2, 25);
+        
+        // Subtitle - centered
+        pdf.setFontSize(10);
+        const subtitleText = 'AI-Powered Claim Analysis & Risk Assessment';
+        const subtitleWidth = pdf.getTextWidth(subtitleText);
+        pdf.text(subtitleText, (pageWidth - subtitleWidth) / 2, 35);
+        
+        yPos = 65;
 
         // Executive Summary Box - properly aligned
         const summaryBoxHeight = 40;
