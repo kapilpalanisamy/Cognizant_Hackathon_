@@ -81,7 +81,7 @@ export const generateFraudReport = async (prediction, selectedFile) => {
         const subtitleWidth = pdf.getTextWidth(subtitleText);
         pdf.text(subtitleText, (pageWidth - subtitleWidth) / 2, 35);
         
-        yPos = 65;
+        yPos = 75;
 
         // Executive Summary Box - properly aligned
         const summaryBoxHeight = 40;
