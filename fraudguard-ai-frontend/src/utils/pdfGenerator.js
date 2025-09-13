@@ -72,7 +72,7 @@ export const generateFraudReport = async (prediction, selectedFile) => {
         // Title - left aligned
         pdf.setFontSize(18);
         const titleText = 'INSURANCE FRAUD DETECTION REPORT';
-        pdf.text(titleText, margin, 25);
+        pdf.text(titleText, margin, 20);
         
         // Subtitle - left aligned
         pdf.setFontSize(10);
