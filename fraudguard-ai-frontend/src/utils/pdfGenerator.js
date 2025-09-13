@@ -69,11 +69,10 @@ export const generateFraudReport = async (prediction, selectedFile) => {
         pdf.text(reportIdText, pageWidth - margin - pdf.getTextWidth(reportIdText), 15);
         pdf.text(dateText, pageWidth - margin - pdf.getTextWidth(dateText), 22);
         
-        // Title - perfectly centered
+        // Title - left aligned
         pdf.setFontSize(18);
         const titleText = 'INSURANCE FRAUD DETECTION REPORT';
-        const titleWidth = pdf.getTextWidth(titleText);
-        pdf.text(titleText, (pageWidth - titleWidth) / 2, 25);
+        pdf.text(titleText, margin, 25);
         
         // Subtitle - centered
         pdf.setFontSize(10);
