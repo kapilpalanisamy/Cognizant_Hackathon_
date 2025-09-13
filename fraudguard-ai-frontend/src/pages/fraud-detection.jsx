@@ -49,10 +49,22 @@ const RiskAssessment = () => {
         if (loading) {
           alert('⏱️ First-time analysis may take 30-60 seconds as the ML service starts up. Please wait...');
         }
-      }, 5000); // Show message after 5 seconds if still loading
+      }, 3000); // Show message after 3 seconds if still loading
     }
     
     try {
+      // First, try to wake up the service
+      if (isProduction) {
+        try {
+          console.log('Attempting to wake up ML service...');
+          await fetch('/.netlify/functions/wake-ml-service', {
+            method: 'GET'
+          });
+          console.log('Wake-up call completed');
+        } catch (wakeError) {
+          console.warn('Wake-up call failed, proceeding anyway:', wakeError);
+        }
+      }
       // Convert file to base64
       const reader = new FileReader();
       reader.onload = async () => {
@@ -121,13 +133,13 @@ const RiskAssessment = () => {
       // Show user-friendly error message based on error type
       let errorMessage;
       if (error.message.includes('Failed to fetch')) {
-        errorMessage = 'Network error: Unable to connect to the fraud detection service.';
+        errorMessage = 'Network error: Unable to connect to the fraud detection service. Please check your internet connection.';
       } else if (error.message.includes('504')) {
-        errorMessage = 'Service timeout: The analysis is taking longer than expected. Please try again.';
+        errorMessage = 'Service timeout: The analysis is taking longer than expected. The ML service may be starting up (this can take 30-60 seconds on first use). Please try again.';
       } else if (error.message.includes('ML API Unavailable')) {
-        errorMessage = 'ML Service Unavailable: The AI fraud detection model is currently offline. Please ensure your ML API is running and try again.';
+        errorMessage = 'ML Service Unavailable: The AI fraud detection model is currently starting up. Please wait 30-60 seconds and try again. (Render free tier cold start)';
       } else if (error.message.includes('API request failed: 503')) {
-        errorMessage = 'ML Service Unavailable: The AI fraud detection model is currently offline. Please try again later.';
+        errorMessage = 'ML Service Starting: The AI model is waking up from sleep mode. Please wait 1-2 minutes and try again. (This is normal for the first request)';
       } else if (error.message.includes('API request failed')) {
         errorMessage = 'The fraud detection service is temporarily unavailable. Please try again in a few moments.';
       } else {
