@@ -41,7 +41,7 @@ fraudguard-ai-backend/
 ├── 📄 test_server.py                  # Local testing server
 ├── 📄 requirements.txt                # Production dependencies
 ├── 📄 requirements_light.txt          # Minimal dependencies
-├── 📄 fast_precision_fraud_model_statedict.pth  # Trained model
+├── 📄 final_model.pth  # Trained model
 ├── 📄 Dockerfile                      # Container configuration
 ├── 📄 railway.json                    # Railway deployment config
 ├── 📄 package.json                    # Node.js metadata (if needed)
@@ -89,7 +89,7 @@ pip install -r requirements_light.txt
 4. **Download Model** (if not included)
 ```bash
 # Model should be in the same directory
-# fast_precision_fraud_model_statedict.pth
+# final_model.pth
 ```
 
 5. **Start Development Server**
@@ -166,7 +166,7 @@ GET /model-info
 **Response:**
 ```json
 {
-  "modelName": "FastPrecisionDetector",
+  "modelName": "FinalModelDetector",
   "architecture": "EfficientNet-B1",
   "version": "v1.3",
   "accuracy": "91.4%",
@@ -187,7 +187,7 @@ import torch
 import torch.nn as nn
 from efficientnet_pytorch import EfficientNet
 
-class FastPrecisionDetector(nn.Module):
+class FinalModelDetector(nn.Module):
     def __init__(self, num_classes=2):
         super().__init__()
         # Load pre-trained EfficientNet-B1
@@ -227,7 +227,7 @@ class FraudDetectionModel:
         self.transform = self._get_transforms()
         
     def _load_model(self, model_path):
-        model = FastPrecisionDetector(num_classes=2)
+        model = FinalModelDetector(num_classes=2)
         checkpoint = torch.load(model_path, map_location=self.device)
         model.load_state_dict(checkpoint)
         model.eval()
@@ -294,7 +294,7 @@ model = None
 async def startup_event():
     global model
     print("Loading fraud detection model...")
-    model = FraudDetectionModel("fast_precision_fraud_model_statedict.pth")
+    model = FraudDetectionModel("final_model.pth")
     print("Model loaded successfully!")
 
 @app.get("/")
@@ -520,13 +520,13 @@ docker run -p 8000:8000 \
 ### **Environment Variables**
 ```bash
 # Production
-MODEL_PATH=/app/fast_precision_fraud_model_statedict.pth
+MODEL_PATH=/app/final_model.pth
 MAX_FILE_SIZE=10485760
 CORS_ORIGINS=https://fraudguard-ai.netlify.app
 LOG_LEVEL=INFO
 
 # Development
-MODEL_PATH=./fast_precision_fraud_model_statedict.pth
+MODEL_PATH=./final_model.pth
 CORS_ORIGINS=*
 LOG_LEVEL=DEBUG
 ```
@@ -812,7 +812,7 @@ async def load_test():
 from pydantic import BaseSettings
 
 class Settings(BaseSettings):
-    model_path: str = "fast_precision_fraud_model_statedict.pth"
+    model_path: str = "final_model.pth"
     max_file_size: int = 10 * 1024 * 1024  # 10MB
     cors_origins: str = "*"
     log_level: str = "INFO"

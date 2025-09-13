@@ -29,13 +29,13 @@ model = None
 device = None
 transform = None
 
-class FastPrecisionDetector(nn.Module):
+class FinalModelDetector(nn.Module):
     """
     ⚡ Fast precision detector - optimized EfficientNet-B1 for speed
     """
     
     def __init__(self, num_classes=2):
-        super(FastPrecisionDetector, self).__init__()
+        super(FinalModelDetector, self).__init__()
         
         # EfficientNet-B1 - good balance of speed and accuracy
         self.backbone = timm.create_model('efficientnet_b1', pretrained=True, num_classes=0)
@@ -81,11 +81,11 @@ def load_model():
     ])
     
     try:
-        model_path = "fast_precision_fraud_model_statedict.pth"
+        model_path = "final_model.pth"
         print(f"📁 Loading model from: {model_path}")
         
         # Create model instance first
-        model = FastPrecisionDetector(num_classes=2)
+        model = FinalModelDetector(num_classes=2)
         
         # Load state dict directly
         state_dict = torch.load(model_path, map_location=device, weights_only=True)
@@ -168,7 +168,7 @@ def predict_fraud(image: Image.Image) -> Dict[str, Any]:
             'recommendedAction': recommended_action,
             'processingTime': f"{processing_time:.2f}s",
             'modelInfo': {
-                'architecture': 'EfficientNet-B1 FastPrecisionDetector',
+                'architecture': 'EfficientNet-B1 FinalModelDetector',
                 'precision': '87.9%',
                 'recall': '86.0%',
                 'accuracy': '91.4%'
@@ -204,7 +204,7 @@ async def health_check():
         "device": str(device) if device else "not_set",
         "gpu_available": torch.cuda.is_available(),
         "model_info": {
-            "architecture": "EfficientNet-B1 FastPrecisionDetector",
+            "architecture": "EfficientNet-B1 FinalModelDetector",
             "precision": "87.9%",
             "recall": "86.0%", 
             "accuracy": "91.4%"

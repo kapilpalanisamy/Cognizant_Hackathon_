@@ -15,7 +15,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy model file
-COPY fast_precision_fraud_model_statedict.pth .
+COPY final_model_statedict.pth .
 
 # Copy application
 COPY real_api.py .

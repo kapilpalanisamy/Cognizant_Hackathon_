@@ -11,13 +11,13 @@ import timm
 import sys
 import os
 
-class FastPrecisionDetector(nn.Module):
+class FinalModelDetector(nn.Module):
     """
     ⚡ Fast precision detector - optimized EfficientNet-B1 for speed
     """
     
     def __init__(self, num_classes=2):
-        super(FastPrecisionDetector, self).__init__()
+        super(FinalModelDetector, self).__init__()
         
         # EfficientNet-B1 - good balance of speed and accuracy
         self.backbone = timm.create_model('efficientnet_b1', pretrained=True, num_classes=0)
@@ -51,7 +51,7 @@ def convert_model():
     """Convert the original model to state dict format"""
     
     # Load the original model
-    model_path = "../../fast_precision_fraud_model.pth"
+    model_path = "../../final_model.pth"
     if not os.path.exists(model_path):
         print(f"❌ Model file not found: {model_path}")
         return False
@@ -76,13 +76,13 @@ def convert_model():
                 return False
         
         # Create new model instance
-        new_model = FastPrecisionDetector(num_classes=2)
+        new_model = FinalModelDetector(num_classes=2)
         
         # Load the state dict
         new_model.load_state_dict(state_dict)
         
         # Save just the state dict
-        output_path = "fast_precision_fraud_model_statedict.pth"
+        output_path = "final_model.pth"
         torch.save(new_model.state_dict(), output_path)
         
         print(f"✅ Successfully converted model!")

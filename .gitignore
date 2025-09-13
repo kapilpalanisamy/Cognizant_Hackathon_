@@ -41,7 +41,7 @@ yarn-error.log*
 # Training data and large files
 Insurance-Fraud-Detection/
 *.pth
-!fraudguard-ai-backend/fast_precision_fraud_model_statedict.pth
+!fraudguard-ai-backend/final_model_statedict.pth
 
 # Jupyter notebooks
 *.ipynb
@@ -49,6 +49,6 @@ Insurance-Fraud-Detection/
 # Other model files
 balanced_fraud_model.pth
 emergency_fraud_model.pth
-fast_precision_fraud_model.pth
+final_model.pth
 precision_fraud_model.pth
 *.zip

@@ -4,7 +4,7 @@ FastAPI-based ML backend for insurance fraud detection using PyTorch and Efficie
 
 ## Features
 
-- **PyTorch Model**: EfficientNet-B1 based FastPrecisionDetector
+- **PyTorch Model**: EfficientNet-B1 based FinalModelDetector
 - **High Performance**: 87.9% precision, 91.4% accuracy
 - **Fast Inference**: Optimized for real-time predictions
 - **CORS Enabled**: Ready for web application integration
@@ -127,8 +127,8 @@ CMD ["uvicorn", "real_api:app", "--host", "0.0.0.0", "--port", "8001"]
 
 ## Model Files
 
-- `fast_precision_fraud_model_statedict.pth`: PyTorch state dict (production)
-- `fast_precision_fraud_model.pth`: Full model file (development)
+- `final_model_statedict.pth`: PyTorch state dict (production)
+- `final_model.pth`: Full model file (development)
 - `convert_model.py`: Script to convert between formats
 
 ## Configuration

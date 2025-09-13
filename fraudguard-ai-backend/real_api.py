@@ -33,11 +33,11 @@ model = None
 device = None
 transform = None
 
-class FastPrecisionDetector(nn.Module):
+class FinalModelDetector(nn.Module):
     """Real model class"""
 
     def __init__(self, num_classes=2):
-        super(FastPrecisionDetector, self).__init__()
+        super(FinalModelDetector, self).__init__()
 
         self.backbone = timm.create_model('efficientnet_b1', pretrained=True, num_classes=0)
         self.num_features = self.backbone.num_features
@@ -78,10 +78,10 @@ def load_model():
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
 
-        model_path = "fast_precision_fraud_model_statedict.pth"
+        model_path = "final_model.pth"
         print(f"📁 Loading model from: {model_path}")
 
-        model = FastPrecisionDetector(num_classes=2)
+        model = FinalModelDetector(num_classes=2)
         state_dict = torch.load(model_path, map_location=device, weights_only=True)
         model.load_state_dict(state_dict)
         model = model.to(device)

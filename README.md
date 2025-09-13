@@ -108,7 +108,7 @@ VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
 
 **Backend (.env)**
 ```env
-MODEL_PATH=./fast_precision_fraud_model_statedict.pth
+MODEL_PATH=./final_model.pth
 PORT=8000
 ```
 
@@ -131,8 +131,8 @@ Cognizant_Hackathon_/
 │   ├── lightweight_api.py       # Optimized API
 │   └── requirements.txt         # Python dependencies
 ├── 📁 model-training/            # ML model training files
-│   ├── fast_precision_training.py
-│   ├── fast_precision_fraud_model.pth
+│   ├── final_model_training.py
+│   ├── final_model.pth
 │   └── *.ipynb                  # Jupyter notebooks
 ├── 📁 Insurance-Fraud-Detection/ # Training dataset
 └── 📁 docs/                     # Documentation
@@ -317,7 +317,7 @@ cd fraud-detection
 pip install torch torchvision timm pillow numpy matplotlib
 
 # Verify model file
-ls fast_precision_fraud_model.pth
+ls final_model.pth
 
 # Test installation
 python -c "import torch; print('✅ Ready for deployment!')"
@@ -335,7 +335,7 @@ import torchvision.transforms as transforms
 
 # Load model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = torch.load('fast_precision_fraud_model.pth', map_location=device)
+model = torch.load('final_model.pth', map_location=device)
 model.eval()
 
 # Preprocessing
@@ -458,8 +458,8 @@ def process_batch(image_paths, model, transform, device):
 ### 📁 **Project Structure**
 ```
 fraud-detection/
-├── fast_precision_fraud_model.pth     # 🏆 Main model file
-├── fast_precision_training.py         # Training script
+├── final_model.pth                    # 🏆 Main model file
+├── final_model_training.py            # Training script
 ├── test_fraud_model.ipynb             # Testing notebook
 ├── README.md                          # This documentation
 ├── requirements.txt                   # Dependencies
@@ -474,7 +474,7 @@ fraud-detection/
 
 ### 📖 **Additional Resources**
 - **Training Notebook:** `test_fraud_model.ipynb` - Interactive testing environment
-- **Training Script:** `fast_precision_training.py` - Full training pipeline
+- **Training Script:** `final_model_training.py` - Full training pipeline
 - **Performance Reports:** Detailed metrics and validation results
 - **API Documentation:** Integration guidelines for production systems
 
@@ -497,7 +497,7 @@ fraud-detection/
    
    # Load model for production
    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-   model = torch.load('fast_precision_fraud_model.pth', map_location=device)
+   model = torch.load('final_model.pth', map_location=device)
    model.eval()
    
    # Verify model is ready
