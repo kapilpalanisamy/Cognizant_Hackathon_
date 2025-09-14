@@ -1,7 +1,7 @@
 # 🛡️ FraudGuard AI - Advanced Insurance Fraud Detection System
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)]([https://fraudguard-ai.netlify.app](https://cognizantfrontend.netlify.app/))
-[![API Status](https://img.shields.io/badge/API-Live-green?style=for-the-badge)]([https://fraudguard-ai-backend.onrender.com](https://cognizantfrontend.netlify.app/))
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://fraudguard-ai.netlify.app)
+[![API Status](https://img.shields.io/badge/API-Live-green?style=for-the-badge)](https://fraudguard-ai-backend.onrender.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 > **Revolutionary AI-powered fraud detection system that analyzes insurance claim images in real-time with 91.4% accuracy**
